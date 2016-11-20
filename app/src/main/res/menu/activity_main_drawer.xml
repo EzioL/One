@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_main"
+            android:icon="@mipmap/ic_menu_home"
+            android:title="首页"/>
+        <item
+            android:id="@+id/nav_reading"
+            android:icon="@mipmap/ic_menu_reading"
+            android:title="阅读"/>
+        <item
+            android:id="@+id/nav_music"
+            android:icon="@mipmap/ic_menu_music"
+            android:title="音乐"/>
+        <item
+            android:id="@+id/nav_movie"
+            android:icon="@mipmap/ic_menu_movie"
+            android:title="电影"/>
+    </group>
+
+</menu>

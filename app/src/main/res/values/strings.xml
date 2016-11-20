@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">One</string>
+    <string name="init">"我的文艺生活"</string>
+    <string name="app_finish">"再按一次退出一个"</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+</resources>
