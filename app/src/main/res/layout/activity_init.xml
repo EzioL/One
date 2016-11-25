@@ -4,16 +4,8 @@
     android:id="@+id/activity_init"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/opening_page"
     android:fitsSystemWindows="@bool/out_fits_system_windows"
     tools:context="com.ezio.one.main.InitActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:drawablePadding="20dp"
-        android:drawableTop="@mipmap/push"
-        android:text="@string/init"
-        android:textSize="14sp" />
 
 </RelativeLayout>

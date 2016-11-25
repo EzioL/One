@@ -27,7 +27,7 @@ public class InitActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                AppContext.getInstance().redirectToActivity(InitActivity.this,MainActivity.class);
+                AppContext.getInstance().redirectToActivity(InitActivity.this,WelcomeActivity.class);
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
