@@ -28,10 +28,10 @@ public class MovieBean extends BaseBean{
     private String verse_en;
     private String score;
     private String revisedscore;
-    private Date releasetime;
-    private Date scoretime;
+    private String releasetime;
+    private String scoretime;
     private String cover;
-    private int servertime;
+    private String servertime;
 
 
 
@@ -76,19 +76,19 @@ public class MovieBean extends BaseBean{
         this.revisedscore = revisedscore;
     }
 
-    public Date getReleasetime() {
+    public String getReleasetime() {
         return releasetime;
     }
 
-    public void setReleasetime(Date releasetime) {
+    public void setReleasetime(String releasetime) {
         this.releasetime = releasetime;
     }
 
-    public Date getScoretime() {
+    public String getScoretime() {
         return scoretime;
     }
 
-    public void setScoretime(Date scoretime) {
+    public void setScoretime(String scoretime) {
         this.scoretime = scoretime;
     }
 
@@ -100,11 +100,11 @@ public class MovieBean extends BaseBean{
         this.cover = cover;
     }
 
-    public int getServertime() {
+    public String getServertime() {
         return servertime;
     }
 
-    public void setServertime(int servertime) {
+    public void setServertime(String servertime) {
         this.servertime = servertime;
     }
 

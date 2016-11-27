@@ -4,25 +4,33 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ezio.one.OneApi;
 import com.ezio.one.R;
-import com.ezio.one.base.BaseReposeBean;
+import com.ezio.one.main.MovieAdapter;
+import com.ezio.one.service.BaseCallback;
+import com.ezio.one.service.BaseReposeBean;
 import com.ezio.one.main.bean.MovieBean;
-import com.ezio.one.utils.Convert;
+import com.ezio.one.service.BaseConvert;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.AbsCallback;
-import com.lzy.okgo.callback.StringCallback;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,9 +43,10 @@ import static android.content.ContentValues.TAG;
  * Created by Ezio on 2016/11/20.
  */
 
-public class MovieFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MovieFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener {
     private View view;
     private int request_id;
+    MovieAdapter mAdapter;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.refreshLayout)
@@ -65,6 +74,16 @@ public class MovieFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     private void initView() {
+        refreshLayout.setColorSchemeResources(R.color.primary);
+        refreshLayout.setOnRefreshListener(this);
+        mAdapter = new MovieAdapter(null);
+        mAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+        mAdapter.isFirstOnly(false);
+        mAdapter.setOnLoadMoreListener(this);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(mAdapter);
+
         setRefreshing(true);
         loadMoreInfo();
     }
@@ -82,25 +101,37 @@ public class MovieFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             }
         });
     }
+    @Override
+    public void onLoadMoreRequested() {
+        request_id = mAdapter.getData().get(mAdapter.getData().size()-1).getId();
+        loadMoreInfo();
+    }
 
     private void loadMoreInfo() {
         OkGo.get(OneApi.MOIVE_LIST + request_id)
                 .cacheMode(CacheMode.FIRST_CACHE_THEN_REQUEST)//缓存模式先使用缓存,然后使用网络数据
-                .execute(new AbsCallback<BaseReposeBean<MovieBean>>() {
-
+                .execute(new BaseCallback<BaseReposeBean<MovieBean>>() {
                     @Override
-                    public BaseReposeBean<MovieBean> convertSuccess(Response response) throws Exception {
-                        JsonReader jsonReader = new JsonReader(response.body().charStream());
-                        BaseReposeBean<MovieBean> bean = Convert.fromJson(jsonReader, BaseReposeBean.class);
-                        response.close();
-                        return bean;
-                    }
+                    public void onSuccess(BaseReposeBean<MovieBean> data, Call call, Response response) {
+                        Log.e(TAG, "onSuccess: " + data.getData().toString());
+                        List<MovieBean> list =new ArrayList<MovieBean>();
+                        for (int i = 0; i < data.getData().length; i++) {
+                            list.add(data.getData()[i]);
+                        }
+                        if (request_id == 0) {
+                            setRefreshing(false);
+                            mAdapter.setNewData(list);
+                        } else {
+                            mAdapter.addData(list);
+                        }
 
-                    @Override
-                    public void onSuccess(BaseReposeBean<MovieBean> movieBeanBaseReposeBean, Call call, Response response) {
-                        Log.e(TAG, "onSuccess: " + movieBeanBaseReposeBean.toString());
+                        if ( list == null || list.size() == 0) {
+                            //数据全部加载完毕
+                            mAdapter.loadMoreEnd();
+                        }
                     }
                 });
+
 
     }
 
@@ -109,4 +140,6 @@ public class MovieFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+
 }

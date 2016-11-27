@@ -1,4 +1,4 @@
-package com.ezio.one.utils;
+package com.ezio.one.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -12,9 +12,9 @@ import java.lang.reflect.Type;
  * Created by Ezio on 2016/11/20.
  */
 
-public class Convert {
+public class BaseConvert {
     private static Gson create() {
-        return Convert.GsonHolder.gson;
+        return BaseConvert.GsonHolder.gson;
     }
 
     private static class GsonHolder {

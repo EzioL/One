@@ -1,4 +1,6 @@
-package com.ezio.one.base;
+package com.ezio.one.service;
+
+import com.ezio.one.base.BaseBean;
 
 import java.util.List;
 
@@ -8,7 +10,7 @@ import java.util.List;
 
 public class BaseReposeBean<T>  extends BaseBean {
     private int res;
-    private List<T> data;
+    private T[] data;
 
     public int getRes() {
         return res;
@@ -18,11 +20,11 @@ public class BaseReposeBean<T>  extends BaseBean {
         this.res = res;
     }
 
-    public List<T> getData() {
+    public T[] getData() {
         return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(T[] data) {
         this.data = data;
     }
 }
